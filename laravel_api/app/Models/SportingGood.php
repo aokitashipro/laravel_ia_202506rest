@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class SportingGood extends Model
 {
     protected $fillable = [
-    'name', 'category', 'brand', 'price', 'weight',
-    'is_available', 'stock', 'release_date',
-    'color', 'sku',
-];
+        'name', 'category', 'brand', 'price', 'weight',
+        'is_available', 'stock', 'release_date',
+        'color', 'sku',
+    ];
+
+    protected $casts = [
+        'release_date' => 'date',
+    ];
 }

@@ -40,7 +40,8 @@ class SportingGoodController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $sportingGood = SportingGood::findOrFail($id);
+        return new SportingGoodResource($sportingGood);
     }
 
     /**
