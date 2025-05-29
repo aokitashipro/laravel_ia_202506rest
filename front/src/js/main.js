@@ -1,5 +1,8 @@
-import { productsIndex } from './products/index';
+import { indexProducts } from './products/index';
+import { showProduct } from './products/show';
 
 // 第1引数はURL, 第2引数はHTMLのid
-productsIndex('http://localhost:8000/api/products', 'product-index');
+indexProducts('http://localhost:8000/api/products', 'products-index');
 
+
+showProduct('http://localhost:8000/api/products/1', 'product-show');

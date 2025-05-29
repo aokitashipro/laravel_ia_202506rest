@@ -1,4 +1,4 @@
-export function productsIndex(apiUrl, elementId) {
+export function indexProducts(apiUrl, elementId) {
   fetch(apiUrl)
     .then(res => res.json())
     .then(json => {
