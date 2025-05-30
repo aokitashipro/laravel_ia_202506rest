@@ -15,8 +15,8 @@ class BookController extends Controller
     public function index()
     {
         // リソースを使いフォーマットを合わせて返却
-        $products = Book::all();
-        return BookResource::collection($products);
+        $books = Book::all();
+        return BookResource::collection($books);
 
     }
 
