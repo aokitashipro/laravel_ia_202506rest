@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController; 
 use App\Http\Controllers\Api\BookController; 
+use App\Http\Controllers\Api\CafeController;
 use App\Http\Controllers\Api\SportingGoodController; 
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\PlayerController;
@@ -20,3 +21,5 @@ Route::apiResource('/sporting-goods', SportingGoodController::class);
 
 Route::apiResource('/teams',   TeamController::class)->only(['index', 'show']);
 Route::apiResource('/players', PlayerController::class)->only(['index', 'store', 'show', 'update']);
+
+Route::apiResource('/cafes', CafeController::class);
