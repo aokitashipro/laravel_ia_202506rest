@@ -2,14 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Api\ProductController; //追記
 use App\Http\Controllers\Api\BookController; //追記
-
-use App\Http\Controllers\Api\MailController;
 use App\Http\Controllers\AuthController;
-
-
 use App\Http\Controllers\Api\MailController; //追記
 use App\Http\Controllers\Api\CafeController;
 use App\Http\Controllers\Api\SportingGoodController; 
