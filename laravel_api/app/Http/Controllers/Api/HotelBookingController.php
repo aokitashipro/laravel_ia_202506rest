@@ -76,7 +76,7 @@ class HotelBookingController extends Controller
             'room_type' => 'nullable|in:シングル,ダブル,ツイン,スイート,ファミリー',
         ]);
 
-        $bookings = HotelBooking::ofRoomType($request->room_type)->orderBy('checkin_date')->get();
+        $bookings = HotelBooking::ofRoomType($request->room_type)->get();
         return HotelBookingListResource::collection($bookings);
     }
 
@@ -88,14 +88,14 @@ class HotelBookingController extends Controller
         ]);
 
         $minNights = $request->min_nights ?? 7;
-        $bookings = HotelBooking::longStay($minNights)->upcoming()->orderBy('checkin_date')->get();;
+        $bookings = HotelBooking::longStay($minNights)->upcoming()->get();;
         return HotelBookingListResource::collection($bookings);
     }
 
     // 9-4.
     public function currentGuests()
     {
-        $bookings = HotelBooking::currentStay()->orderBy('guest_name')->get();;
+        $bookings = HotelBooking::currentStay()->get();;
         return HotelBookingListResource::collection($bookings);
     }
 
@@ -110,25 +110,26 @@ class HotelBookingController extends Controller
         $bookings = HotelBooking::betweenDates(
             $request->startDate, 
             $request->endDate
-        )->orderBy('checkin_date')->get();
+        )->get();
         return HotelBookingListResource::collection($bookings);
     }
 
     // 9-6.
     public function filterByGuestCount(Request $request)
-{
-    $request->validate([
-        'min_guests' => 'nullable|integer|min:1',
-        'max_guests' => 'nullable|integer|max:10|gte:min_guests'
-    ]);
+    {
+        $request->validate([
+            'min_guests' => 'nullable|integer|min:1',
+            'max_guests' => 'nullable|integer|max:10|gte:min_guests'
+        ]);
 
-    $bookings = HotelBooking::guestCountBetween(
-        $request->min_guests, 
-        $request->max_guests
-    )->orderBy('checkin_date')->get();
-    return HotelBookingListResource::collection($bookings);
-}
+        $bookings = HotelBooking::guestCountBetween(
+            $request->min_guests, 
+            $request->max_guests
+        )->orderBy('checkin_date')->get();
+        return HotelBookingListResource::collection($bookings);
+    }
 
+    //9-7
     public function premiumSearch()
     {
         $bookings = HotelBooking::getPremiumBookings()->get();
