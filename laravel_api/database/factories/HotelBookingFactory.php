@@ -18,7 +18,7 @@ class HotelBookingFactory extends Factory
     public function definition(): array
     {
        $checkinDate = $this->faker->dateTimeBetween('-30 days', '+60 days');
-        $checkoutDate = Carbon::parse($checkinDate)->addDays($this->faker->numberBetween(1, 5));
+        $checkoutDate = Carbon::parse($checkinDate)->addDays($this->faker->numberBetween(1, 20));
 
         return [
             'guest_name' => $this->faker->name(),

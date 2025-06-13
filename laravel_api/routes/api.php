@@ -38,5 +38,11 @@ Route::apiResource('/cafes', CafeController::class);
 Route::get('/mail-test', [ MailController::class, 'index']); //追記
 
 Route::get('hotel-bookings/upcoming', [HotelBookingController::class, 'upcomingBookings']);
+Route::get('hotel-bookings/filter/room-type', [HotelBookingController::class, 'filterByRoomType']);
+Route::get('hotel-bookings/long-stay', [HotelBookingController::class, 'longStayBookings']);
+Route::get('hotel-bookings/current-guests', [HotelBookingController::class, 'currentGuests']);
+Route::get('hotel-bookings/search/period', [HotelBookingController::class, 'searchByPeriod']);
+Route::get('hotel-bookings/filter/guest-count', [HotelBookingController::class, 'filterByGuestCount']);
+
 
 Route::apiResource('hotel-bookings', HotelBookingController::class);

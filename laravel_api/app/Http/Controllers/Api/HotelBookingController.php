@@ -68,4 +68,65 @@ class HotelBookingController extends Controller
         $bookings = HotelBooking::upcoming()->orderBy('checkin_date')->get();
         return HotelBookingListResource::collection($bookings);
     }
+
+    // 9-2.
+    public function filterByRoomType(Request $request)
+    {
+        $request->validate([
+            'room_type' => 'nullable|in:シングル,ダブル,ツイン,スイート,ファミリー',
+        ]);
+
+        $bookings = HotelBooking::ofRoomType($request->room_type)->orderBy('checkin_date')->get();
+        return HotelBookingListResource::collection($bookings);
+    }
+
+    // 9-3.
+    public function longStayBookings(Request $request)
+    {
+        $request->validate([
+            'min_nights' => 'nullable|integer|min:1|max:30'
+        ]);
+
+        $minNights = $request->min_nights ?? 7;
+        $bookings = HotelBooking::longStay($minNights)->upcoming()->orderBy('checkin_date')->get();;
+        return HotelBookingListResource::collection($bookings);
+    }
+
+    // 9-4.
+    public function currentGuests()
+    {
+        $bookings = HotelBooking::currentStay()->orderBy('guest_name')->get();;
+        return HotelBookingListResource::collection($bookings);
+    }
+
+    // 9-5.
+    public function searchByPeriod(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date'
+        ]);
+
+        $bookings = HotelBooking::betweenDates(
+            $request->startDate, 
+            $request->endDate
+        )->orderBy('checkin_date')->get();
+        return HotelBookingListResource::collection($bookings);
+    }
+
+    // 9-6.
+    public function filterByGuestCount(Request $request)
+{
+    $request->validate([
+        'min_guests' => 'nullable|integer|min:1',
+        'max_guests' => 'nullable|integer|max:10|gte:min_guests'
+    ]);
+
+    $bookings = HotelBooking::guestCountBetween(
+        $request->min_guests, 
+        $request->max_guests
+    )->orderBy('checkin_date')->get();
+    return HotelBookingListResource::collection($bookings);
+}
+    
 }
