@@ -9,7 +9,7 @@ use App\Models\Position;
 use App\Models\Player;
 use App\Models\PlayerPosition;
 use App\Models\Team;
-
+use App\Models\HotelBooking;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             PositionSeeder::class,
             TeamSeeder::class,
         ]);
+        HotelBooking::factory()->count(200)->create();
 
         // ポジション一覧を取得
         $positions = Position::all();
