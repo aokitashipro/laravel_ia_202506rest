@@ -43,6 +43,7 @@ Route::get('hotel-bookings/long-stay', [HotelBookingController::class, 'longStay
 Route::get('hotel-bookings/current-guests', [HotelBookingController::class, 'currentGuests']);
 Route::get('hotel-bookings/search/period', [HotelBookingController::class, 'searchByPeriod']);
 Route::get('hotel-bookings/filter/guest-count', [HotelBookingController::class, 'filterByGuestCount']);
+Route::get('hotel-bookings/premium-search', [HotelBookingController::class, 'premiumSearch']);
 
 
 Route::apiResource('hotel-bookings', HotelBookingController::class);

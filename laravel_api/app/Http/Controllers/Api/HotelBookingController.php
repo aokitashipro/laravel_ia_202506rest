@@ -128,5 +128,11 @@ class HotelBookingController extends Controller
     )->orderBy('checkin_date')->get();
     return HotelBookingListResource::collection($bookings);
 }
+
+    public function premiumSearch()
+    {
+        $bookings = HotelBooking::getPremiumBookings()->get();
+        return HotelBookingListResource::collection($bookings);
+    }
     
 }
