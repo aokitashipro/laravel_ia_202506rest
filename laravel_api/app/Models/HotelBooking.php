@@ -33,7 +33,8 @@ class HotelBooking extends Model
     #[Scope]
     protected function upcoming(Builder $query): void
     {
-        $query->where('checkin_date', '>=', now());
+        $query->where('checkin_date', '>=', now())
+        ->orderBy('checkin_date');
     }
 
     // 9-2. パラメータ付きスコープ
@@ -41,7 +42,8 @@ class HotelBooking extends Model
     protected function ofRoomType(Builder $query, ?string $roomType = null): void
     {
         if ($roomType) {
-            $query->where('room_type', $roomType);
+            $query->where('room_type', $roomType)
+            ->orderBy('checkin_date');
         }
     }
 
@@ -49,7 +51,8 @@ class HotelBooking extends Model
     #[Scope]
     protected function longStay(Builder $query, int $minNights = 7): void
     {
-        $query->whereRaw('DATEDIFF(checkout_date, checkin_date) >= ?', [$minNights]);
+        $query->whereRaw('DATEDIFF(checkout_date, checkin_date) >= ?', [$minNights])
+        ->orderBy('checkin_date');
     }
 
     // 問題4: 現在滞在中
@@ -57,7 +60,8 @@ class HotelBooking extends Model
     protected function currentStay(Builder $query): void
     {
         $query->where('checkin_date', '<=', now())
-            ->where('checkout_date', '>', now());
+            ->where('checkout_date', '>', now())
+            ->orderBy('checkin_date');
     }
 
     //9-5. 
@@ -65,10 +69,12 @@ class HotelBooking extends Model
     protected function betweenDates(Builder $query, ?string $startDate = null, ?string $endDate = null): void
     {
         if ($startDate) {
-            $query->where('checkin_date', '>=', $startDate);
+            $query->where('checkin_date', '>=', $startDate)
+            ->orderBy('checkin_date');
         }
         if ($endDate) {
-            $query->where('checkin_date', '<=', $endDate);
+            $query->where('checkin_date', '<=', $endDate)
+            ->orderBy('checkin_date');
         }
     }
 
@@ -77,10 +83,10 @@ class HotelBooking extends Model
     protected function guestCountBetween(Builder $query, ?int $minGuests = null, ?int $maxGuests = null): void
     {
         if ($minGuests) {
-            $query->where('guest_count', '>=', $minGuests);
+            $query->where('guest_count', '>=', $minGuests)->orderBy('checkin_date');
         }
         if ($maxGuests) {
-            $query->where('guest_count', '<=', $maxGuests);
+            $query->where('guest_count', '<=', $maxGuests)->orderBy('checkin_date');
         }
     }
 
