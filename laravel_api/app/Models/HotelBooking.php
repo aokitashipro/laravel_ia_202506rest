@@ -84,6 +84,15 @@ class HotelBooking extends Model
         }
     }
 
-
+    #[Scope]
+    protected function getPremiumBookings(Builder $query)
+    {
+        $query->upcoming()
+                ->ofRoomType('スイート')
+                ->longStay(10)
+                ->guestCountBetween(3, 6)
+                ->orderBy('checkin_date');
+                
+}
 
 }
