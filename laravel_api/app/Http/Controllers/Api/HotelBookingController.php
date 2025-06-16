@@ -88,7 +88,7 @@ class HotelBookingController extends Controller
         ]);
 
         $minNights = $request->min_nights ?? 7;
-        $bookings = HotelBooking::longStay($minNights)->upcoming()->get();;
+        $bookings = HotelBooking::longStay($minNights)->upcoming()->get();
         return HotelBookingListResource::collection($bookings);
     }
 
