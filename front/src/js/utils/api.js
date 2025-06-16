@@ -13,7 +13,7 @@ export const apiClient = {
         const data = await response.json()
         
         if (!response.ok) {
-            throw data // エラーレスポンスをthrow
+            throw data
         }
         
         return data
@@ -21,19 +21,29 @@ export const apiClient = {
     
     async post(endpoint, data) {
         const token = localStorage.getItem('token')
+        
+        // FormData かどうかを判定
+        const isFormData = data instanceof FormData
+        
+        const headers = {
+            'Authorization': token ? `Bearer ${token}` : '',
+        }
+        
+        // FormData の場合は Content-Type を設定しない（ブラウザが自動設定）
+        if (!isFormData) {
+            headers['Content-Type'] = 'application/json'
+        }
+        
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             method: 'POST',
-            headers: {
-                'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers,
+            body: isFormData ? data : JSON.stringify(data)
         })
         
         const responseData = await response.json()
         
         if (!response.ok) {
-            throw responseData // エラーレスポンスをthrow
+            throw responseData
         }
         
         return responseData
@@ -41,13 +51,21 @@ export const apiClient = {
     
     async put(endpoint, data) {
         const token = localStorage.getItem('token')
+        
+        const isFormData = data instanceof FormData
+        
+        const headers = {
+            'Authorization': token ? `Bearer ${token}` : '',
+        }
+        
+        if (!isFormData) {
+            headers['Content-Type'] = 'application/json'
+        }
+        
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             method: 'PUT',
-            headers: {
-                'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers,
+            body: isFormData ? data : JSON.stringify(data)
         })
         
         const responseData = await response.json()
