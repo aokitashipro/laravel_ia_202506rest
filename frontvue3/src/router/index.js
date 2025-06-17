@@ -15,6 +15,10 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    { path: '/books', component: BookIndex },           // 一覧
+    { path: '/books/create', component: BookCreate },   // 新規作成
+    { path: '/books/:id', component: BookShow },        // 詳細
+    { path: '/books/:id/edit', component: BookEdit },    // 編集
     {
       path: '/login',
       name: 'Login',
@@ -25,18 +29,7 @@ const router = createRouter({
       name: 'register',
       component: RegisterView,
     },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
-    },
-    { path: '/books', component: BookIndex },           // 一覧
-    { path: '/books/create', component: BookCreate },   // 新規作成
-    { path: '/books/:id', component: BookShow },        // 詳細
-    { path: '/books/:id/edit', component: BookEdit }    // 編集
+
   ],
 })
 

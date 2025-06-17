@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Http\Resources\BookResource;
+use App\Http\Requests\BookStoreRequest;
 
 class BookController extends Controller
 {
@@ -23,19 +24,42 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    // public function store(Request $request)
+    // {
+    //     //バリデーション直書き
+    //     try {
+    //         $validated = $request->validate([
+    //             'title' => 'required|string|min:3|max:255',
+    //             'price' => 'required|numeric|min:0',
+    //         ]);
+    //         $book = Book::create($validated);
+
+    //         return  (new BookResource($book))
+    //         ->additional(['message' => '商品情報が登録されました'])
+    //         ->response()
+    //         ->setStatusCode(201);
+
+    //     } catch (\Illuminate\Validation\ValidationException $e) {
+    //     return response()->json([
+    //         'message' => 'Validation failed',
+    //         'errors' => $e->errors()
+    //     ], 422);
+    // }
+    // }
+
+    // カスタムフォームリクエスト
+    public function store(BookStoreRequest $request)
     {
 
-        $book = Book::create([
-            'title' => $request->title,
-            'price' => $request->price,
-        ]);
+        $validated = $request->validated();
+        $book = Book::create($validated);
 
         return  (new BookResource($book))
         ->additional(['message' => '商品情報が登録されました'])
         ->response()
         ->setStatusCode(201);
     }
+
 
     /**
      * Display the specified resource.
