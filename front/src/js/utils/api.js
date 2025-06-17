@@ -6,7 +6,8 @@ export const apiClient = {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             headers: {
                 'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json', // 追加
             }
         })
         
@@ -27,6 +28,7 @@ export const apiClient = {
         
         const headers = {
             'Authorization': token ? `Bearer ${token}` : '',
+            'Accept': 'application/json', // 追加
         }
         
         // FormData の場合は Content-Type を設定しない（ブラウザが自動設定）
@@ -56,6 +58,7 @@ export const apiClient = {
         
         const headers = {
             'Authorization': token ? `Bearer ${token}` : '',
+            'Accept': 'application/json', // 追加
         }
         
         if (!isFormData) {
@@ -83,7 +86,8 @@ export const apiClient = {
             method: 'DELETE',
             headers: {
                 'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json', // 追加
             }
         })
         

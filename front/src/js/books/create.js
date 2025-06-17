@@ -31,25 +31,28 @@ async function handleSubmit(e) {
         const response = await apiClient.post('/books', bookData)
         
         console.log('成功レスポンス:', response)
-        alert('商品を登録しました！')
+        alert('書籍を登録しました！') // 商品→書籍に変更
         window.location.href = '/books/'
         
     } catch (error) {
-        console.error('商品登録に失敗:', error)
+        console.error('書籍登録に失敗:', error) // 商品→書籍に変更
         
-        if (error.errors) {
+        // APIクライアントの実装に合わせてエラーアクセス方法を調整
+        let errors = null
+        if (error.data && error.data.errors) {
+            errors = error.data.errors  // APIクライアントでthrow errorの場合
+        } else if (error.errors) {
+            errors = error.errors       // APIクライアントでthrow responseDataの場合
+        }
+        
+        if (errors) {
             // バリデーションエラーを表示
-            // オブジェクトの値（配列）だけを取得 Object.values(error.errors)
-            // 二次元配列を一次元配列に平坦化 flat()
-            // 配列を HTML の改行タグで結合して文字列に join('<br>')
-            const errorMessages = Object.values(error.errors).flat().join('<br>')
-
-            // id指定して文字設定
+            const errorMessages = Object.values(errors).flat().join('<br>')
             const errorDiv = document.getElementById('error-message')
             errorDiv.innerHTML = errorMessages
             errorDiv.style.display = 'block'
         } else {
-            alert('商品登録に失敗しました。')
+            alert('書籍登録に失敗しました。') // 商品→書籍に変更
         }
     }
 }
