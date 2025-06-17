@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>書籍新規登録</title>
+    <link rel="stylesheet" href="/src/css/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">ホーム</a>
+        <a href="/books/">書籍一覧</a>
+        <a href="/books/create.html">新規登録</a>
+    </nav>
+    
+    <main>
+        <h1>書籍新規登録</h1>
+        <div id="error-message"></div>
+
+        <form id="book-form">
+            <div>
+                <label for="title">書籍名:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div>
+                <label for="price">価格:</label>
+                <input type="number" id="price" name="price" min="0" required>
+            </div>
+            
+            <div>
+                <button type="submit" >登録</button>
+                <a href="/books/" >キャンセル</a>
+            </div>
+        </form>
+    </main>
+    
+    <script type="module" src="/src/js/books/create.js"></script>
+</body>
+</html>
