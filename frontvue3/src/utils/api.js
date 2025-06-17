@@ -10,7 +10,9 @@ export const apiClient = {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             headers: {
                 'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json', // 追加
+
             }
         })
         
@@ -29,7 +31,9 @@ export const apiClient = {
             method: 'POST',
             headers: {
                 'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json', // 追加
+
             },
             body: JSON.stringify(data)
         })
@@ -49,7 +53,9 @@ export const apiClient = {
             method: 'PUT',
             headers: {
                 'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json', // 追加
+
             },
             body: JSON.stringify(data)
         })
@@ -69,7 +75,9 @@ export const apiClient = {
             method: 'DELETE',
             headers: {
                 'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json', // 追加
+
             }
         })
         
