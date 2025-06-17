@@ -40,9 +40,9 @@
       </p>
     </div>
 
-    <div id="productsSection" style="display: none;">
-      <h2>登録完了！商品一覧</h2>
-      <ul id="productList"></ul>
+    <div id="completedSection" style="display: none;">
+      <h2>登録完了！</h2>
+      <p>ユーザー登録が完了しました。</p>
       <button id="logoutBtn">ログアウト</button>
     </div>
 
@@ -69,28 +69,11 @@
         return true;
       }
 
-      // 商品一覧を読み込む関数
-      async function loadProducts() {
-        try {
-          const data = await apiClient.get('/products');
-          const productList = document.getElementById('productList');
-          
-          if (data.data && data.data.length > 0) {
-            productList.innerHTML = data.data.map(product => 
-              `<li>${product.name || 'name未設定'} - ¥${product.price || '価格未設定'}</li>`
-            ).join('');
-          } else {
-            productList.innerHTML = '<li>商品がありません</li>';
-          }
-
-          // 登録画面を非表示にして商品一覧を表示
-          document.getElementById('registerSection').style.display = 'none';
-          document.getElementById('productsSection').style.display = 'block';
-
-        } catch (error) {
-          console.error('商品取得エラー:', error);
-          showMessage(`商品の取得に失敗しました: ${error.message || 'エラーが発生しました'}`, true);
-        }
+      // 登録完了後の画面表示
+      function showCompletedState() {
+        // 登録フォームを非表示にして完了画面を表示
+        document.getElementById('registerSection').style.display = 'none';
+        document.getElementById('completedSection').style.display = 'block';
       }
 
       // フォーム送信イベント
@@ -123,9 +106,9 @@
             localStorage.setItem('user', JSON.stringify(data.user));
           }
 
-          // 少し待ってから商品一覧を表示
+          // 少し待ってから完了画面を表示
           setTimeout(() => {
-            loadProducts();
+            showCompletedState();
           }, 1000);
 
         } catch (error) {
@@ -163,8 +146,8 @@
       window.addEventListener('load', () => {
         const token = localStorage.getItem('token');
         if (token) {
-          // 既にログインしている場合は商品一覧を表示
-          loadProducts();
+          // 既にログインしている場合は完了画面を表示
+          showCompletedState();
         }
       });
     </script>
