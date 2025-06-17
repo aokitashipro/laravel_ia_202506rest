@@ -24,9 +24,10 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('/books', BookController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('/products', ProductController::class); //追記
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
+
 
 Route::apiResource('/sporting-goods', SportingGoodController::class);
 

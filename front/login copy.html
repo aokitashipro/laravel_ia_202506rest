@@ -1,0 +1,45 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="ja">
+  <head></head>
+  <body>
+<input id="email"    placeholder="email">
+<input id="password" placeholder="password" type="password">
+<button id="loginBtn">Login</button>
+
+<ul id="list"></ul>
+
+<script type="module">
+document.getElementById('loginBtn').onclick = async () => {
+  const email    = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  const res  = await fetch('http://127.0.0.1:8000/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await res.json();
+
+  if (!res.ok) return alert(data.message || 'login error');
+
+  // ① token を保存（ここでは localStorage）
+  localStorage.setItem('token', data.token);
+
+  // ② すぐに Products を呼んでみる
+  loadProducts();
+};
+
+async function loadProducts() {
+  const res = await fetch('http://127.0.0.1:8000/api/products', {
+    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+  });
+  const products = await res.json();
+
+  document.getElementById('list').innerHTML =
+    products.data.map(t => `<li>${t.name}</li>`).join('');
+}
+</script>
+
+</body>
+</html>

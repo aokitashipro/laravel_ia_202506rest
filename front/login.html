@@ -1,45 +1,135 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="ja">
-  <head></head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン</title>
+  </head>
   <body>
-<input id="email"    placeholder="email">
-<input id="password" placeholder="password" type="password">
-<button id="loginBtn">Login</button>
+    <h1>ログイン</h1>
+    
+    <form id="loginForm">
+      <div>
+        <label for="email">Email:</label>
+        <input id="email" name="email" type="email" placeholder="email" required>
+      </div>
+      
+      <div>
+        <label for="password">Password:</label>
+        <input id="password" name="password" type="password" placeholder="password" required>
+      </div>
+      
+      <button type="submit">Login</button>
+    </form>
 
-<ul id="list"></ul>
+    <div id="message"></div>
+    
+    <p>
+      <a href="register.html">アカウントをお持ちでない方はこちら</a>
+    </p>
 
-<script type="module">
-document.getElementById('loginBtn').onclick = async () => {
-  const email    = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+    <div id="productSection" style="display: none;">
+      <h2>商品一覧</h2>
+      <ul id="list"></ul>
+      <button id="logoutBtn">ログアウト</button>
+    </div>
 
-  const res  = await fetch('http://127.0.0.1:8000/api/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  });
-  const data = await res.json();
+    <script type="module">
+      // API接続関数をインポート
+      import { apiClient } from './src/js/utils/api.js';
 
-  if (!res.ok) return alert(data.message || 'login error');
+      // メッセージ表示用関数
+      function showMessage(message, isError = false) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = message;
+        messageDiv.style.color = isError ? 'red' : 'green';
+      }
 
-  // ① token を保存（ここでは localStorage）
-  localStorage.setItem('token', data.token);
+      // 商品一覧を読み込む関数
+      async function loadProducts() {
+        try {
+          const products = await apiClient.get('/products');
+          
+          const listElement = document.getElementById('list');
+          if (products.data && products.data.length > 0) {
+            listElement.innerHTML = products.data.map(product => 
+              `<li>${product.name || 'name未設定'}</li>`
+            ).join('');
+          } else {
+            listElement.innerHTML = '<li>商品がありません</li>';
+          }
 
-  // ② すぐに Products を呼んでみる
-  loadProducts();
-};
+          // ログインフォームを非表示にして商品一覧を表示
+          document.getElementById('loginForm').style.display = 'none';
+          document.getElementById('productSection').style.display = 'block';
+          document.getElementById('message').textContent = '';
 
-async function loadProducts() {
-  const res = await fetch('http://127.0.0.1:8000/api/products', {
-    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-  });
-  const products = await res.json();
+        } catch (error) {
+          console.error('商品取得エラー:', error);
+          showMessage('商品の取得に失敗しました', true);
+        }
+      }
 
-  document.getElementById('list').innerHTML =
-    products.data.map(t => `<li>${t.name}</li>`).join('');
-}
-</script>
+      // ログインフォーム送信イベント
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const loginData = {
+          email: formData.get('email'),
+          password: formData.get('password')
+        };
 
-</body>
+        try {
+          const data = await apiClient.post('/login', loginData);
+          
+          // ① token を保存
+          localStorage.setItem('token', data.token);
+          if (data.user) {
+            localStorage.setItem('user', JSON.stringify(data.user));
+          }
+
+          showMessage('ログイン成功！', false);
+
+          // ② すぐに Products を呼んでみる
+          setTimeout(() => {
+            loadProducts();
+          }, 500);
+
+        } catch (error) {
+          console.error('ログインエラー:', error);
+          showMessage(error.message || 'ログインに失敗しました', true);
+        }
+      });
+
+      // ログアウトボタンのクリックイベント
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        try {
+          // APIでログアウト
+          await apiClient.post('/logout', {});
+        } catch (error) {
+          console.error('ログアウトAPIエラー:', error);
+        } finally {
+          // ローカルストレージをクリア
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+
+          // フォームを再表示
+          document.getElementById('loginForm').style.display = 'block';
+          document.getElementById('productSection').style.display = 'none';
+          document.getElementById('loginForm').reset();
+          showMessage('ログアウトしました', false);
+        }
+      });
+
+      // ページ読み込み時にトークンがあるかチェック
+      window.addEventListener('load', () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          // 既にログインしている場合は商品一覧を表示
+          loadProducts();
+        }
+      });
+    </script>
+  </body>
 </html>

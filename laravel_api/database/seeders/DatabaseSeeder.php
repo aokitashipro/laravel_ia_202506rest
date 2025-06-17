@@ -10,6 +10,8 @@ use App\Models\Player;
 use App\Models\PlayerPosition;
 use App\Models\Team;
 use App\Models\HotelBooking;
+use Illuminate\Support\Facades\Hash;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,6 +25,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => Hash::make('password123')
         ]);
 
         $this->call([
