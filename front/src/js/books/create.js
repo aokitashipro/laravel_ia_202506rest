@@ -15,7 +15,7 @@ async function handleSubmit(e) {
     
     // formData フォーム情報を設定
     const form = e.target
-    const formData = new FormData(form)
+    const formData = new FormData(form) // フォームをまとめて扱える・画像・ファイル
     
     // エラーメッセージをクリア
     document.getElementById('error-message').style.display = 'none'
