@@ -15,7 +15,7 @@ class MailController extends Controller
 {
     public function index(){
         // 同期
-        //Mail::to('test@example.com')->send(new TestMail());
+        // Mail::to('test@example.com')->send(new TestMail());
 
         // 非同期
         SendMailJob::dispatch();

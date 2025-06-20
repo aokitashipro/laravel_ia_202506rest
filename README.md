@@ -38,10 +38,15 @@ php artisan key:generate
 ### 6. .envの調整
 
 DB_CONNECTION=mysql
+
 DB_HOST=127.0.0.1
+
 DB_PORT=3306
+
 DB_DATABASE=laravel_ia_api
+
 DB_USERNAME=laravel_user
+
 DB_PASSWORD=password123
 
 
